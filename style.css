@@ -164,6 +164,8 @@ ul li .todo_img_section {
     width: 28px;
     height: 28px;
 
+    cursor: pointer;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -173,7 +175,7 @@ ul li .todo_img_section {
     width: 28px;
     height: 28px;
 
-    color: #000000;
+    cursor: pointer;
 
     display: flex;
     align-items: center;
