@@ -2,7 +2,6 @@ console.log("Add your Task Please!");
 
 const arr = [];
 const btnTop = document.querySelector(".btnAdd");
-
 btnTop.addEventListener("click", onClick);
 
 function onClick(event) {
@@ -38,7 +37,7 @@ function updateElement() {
           <img src="/edit_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.png" onClick="edit_f(${index})">
         </span>
         <span class="deleteTodolist">
-          <img src="/delete_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 (1).png" alt="" onClick="delete_f(${index})">
+          <img src="/delete_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 (1).png" onClick="delete_f(${index})">
         </span>
       </div> `;
       console.log(task);
