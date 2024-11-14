@@ -1,124 +1,87 @@
-console.log("Add your Task Please!");
+const array = [];
+const btnAdd = document.querySelector(".btnAdd");
+btnAdd.addEventListener("click", onCLick);
 
-const arr = [];
-const btnTop = document.querySelector(".btnAdd");
-btnTop.addEventListener("click", onClick);
+document.addEventListener('DOMContentLoaded' ,() => {
+    const storedArray = JSON.parse(localStorage.getItem('array'));
 
-function onClick(event) {
+    if(storedArray) {
+        storedArray.forEach(task => array.push(task));
+        updateElement();
+        updateStatus();
+    };
+});
+
+const saveArray = () => {
+    localStorage.setItem('array' ,JSON.stringify(array));
+};
+
+function onCLick(event) {
   event.preventDefault();
-  addItem();
-};
+  addElement();
+}
 
-function addItem() {
-  const inputTop = document.querySelector(".input");
-  const text = inputTop.value.trim();
-  if(text) {
-    arr.push({text: text ,complete: false});
-  };
-  inputTop.value = '';
-  updateElement();
-  // console.log(arr);
-};
+function addElement() {
+  const inputElem = document.querySelector(".input");
+  const text = inputElem.value.trim();
+  array.push({ text: text, complete: false });
+  // console.log(array)
+  inputElem.value = "";
+  updateElement(text);
+  saveArray();
+}
 
 function updateElement() {
-  const ulElement = document.querySelector('.ul');
-  ulElement.innerHTML = '';
-
-  arr.forEach((task ,index) => {
-    const liElement = document.createElement('li');
-    liElement.innerHTML = `
-      <div class="todo_input_section ${task.complete ? 'complete' : ''}">
-        <input class="inputBottom" type="checkbox" ${task.complete ? 'checked' : ''}>
-        <span>${task.text}</span>
-      </div>
-
-      <div class="todo_img_section">
-        <span class="editTodolist">
-          <img src="/edit_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.png" onClick="edit_f(${index})">
-        </span>
-        <span class="deleteTodolist">
-          <img src="/delete_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 (1).png" onClick="delete_f(${index})">
-        </span>
-      </div> `;
-      console.log(task);
-      liElement.addEventListener('change' ,() => onCheng(index));
-      ulElement.append(liElement);
+  const ulElem = document.querySelector(".ul");
+  ulElem.innerHTML = "";
+  array.forEach((task, index) => {
+    const liElem = document.createElement("li");
+    liElem.innerHTML = `
+                <div class="todo_input_section task ${task.complete ? 'complete' : ''}">
+                    <input type="checkbox" class="checkbox" ${task.complete ? 'checked' : ''}/>
+                    <span class="checkText">${task.text}</span>
+                </div>
+                <div class="todo_img_section">
+                    <span class="editTodolist">
+                        <img src="/edit_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.png" onClick="onEdit(${index})">
+                    </span>
+                    <span class="deleteTodolist">
+                        <img src="/delete_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 (1).png" alt="" onClick="onDelete(${index})">
+                    </span>
+                </div>
+                `;
+                liElem.addEventListener('change' ,() => toggleComplete(index))
+                ulElem.append(liElem);
   });
+}
+
+const toggleComplete = (index) => {
+    array[index].complete = !array[index].complete;
+    console.log({array})
+    updateElement();
+    updateStatus();
+    saveArray();
 };
 
-const onCheng = (index) => {
-  arr[index].complete = !arr[index].complete;
-  updateElement();
+function onEdit(index) {
+    const inputElem = document.querySelector(".input");
+    inputElem.value = array[index].text;
+    array.splice(index ,1);
+    updateElement();
+    saveArray();
 };
 
-const edit_f = (index) => {
-  const inputTop = document.querySelector(".input");
-  inputTop.value = arr[index].text;
-
-  arr.splice(index ,1);
-  updateElement();
+function onDelete(index) {
+    array.splice(index ,1);
+    updateElement();
+    saveArray();
 };
 
-const delete_f = (index) => {
-  arr.splice(index ,1);
-  updateElement();
+function updateStatus() {
+    const completeArray = array.filter(task => task.complete).length;
+    const totalArray = array.length;
+    const processArray = (completeArray/totalArray) * 100;
+    const progressBar = document.querySelector('.todo_stat');
+    progressBar.style.width = `${processArray}%`
+    document.querySelector('.number').innerText = `${completeArray} / ${totalArray}`
 };
-
-// const inputTop = document.querySelector(".input");
-// const btnTop = document.querySelector(".btnAdd");
-// const ulElement = document.querySelector(".ul");
-
-// btnTop.addEventListener("click", onClick);
-
-// function onClick(event) {
-//   const inputValue = inputTop.value.trim();
-//   if (inputValue !== '') {
-//     arr.push(inputValue);
-//     inputTop.value = ''; // Clear input field
-//     event.preventDefault();
-//     console.log(inputValue);
-//     addItem(inputValue);
-//   }
-// }
-
-// function addItem(inputValue) {
-//   const liElement = document.createElement("li");
-//   liElement.classList.add('todo-item');
-//   liElement.innerHTML = `
-//                     <div class="todo_input_section">
-//                         <input class="inputBottom" type="checkbox" value="checked">
-//                         <span>${inputValue}</span>
-//                     </div>
-//                     <div class="todo_img_section">
-//                         <span class="editTodolist">
-//                             <img src="/edit_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.png">
-//                         </span>
-//                         <span class="deleteTodolist">
-//                             <img src="/delete_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24 (1).png" alt="">
-//                         </span>
-//                     </div>`;
-//   ulElement.appendChild(liElement);
-
-//   const editElement = document.querySelector('.editTodolist');
-//   const deleteElement = document.querySelector('.deleteTodolist');
-
-//   editElement.addEventListener('click' ,() => {
-//     const newInputValue = prompt("Edit your task:", inputValue);
-//     if (newInputValue && newInputValue !== inputValue) {
-//       liElement.querySelector("span").textContent = newInputValue;
-//       const index = arr.indexOf(inputValue);
-//       if (index > -1) {
-//         arr[index] = newInputValue;  // Update the array
-//       }
-//     }
-//   });
-
-//   deleteElement.addEventListener('click' ,() => {
-//     ulElement.removeChild(liElement);
-//     const index = arr.indexOf(inputValue);
-//     if (index > -1) {
-//       arr.splice(index, 1);  // Remove from the array
-//     }
-//   });
-// }
-

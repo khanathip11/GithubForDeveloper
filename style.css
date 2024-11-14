@@ -87,6 +87,26 @@
     }
 }
 
+.todo_status {
+    width: 350px;
+    height: 10px;
+
+    margin-top: 20px;
+
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+.todo_stat {
+    width: 0%;
+    height: 10px;
+    
+    border-radius: 10px;
+    background: #2dff2d;
+
+    transition: all .3s;
+}
+
 .todo_child_last {
     margin-top: 55px;
 
@@ -97,7 +117,7 @@
     width: 60px;
     height: 60px;
 
-    font-size: 22px;
+    font-size: 15px;
     font-weight: 900;
 
     border-radius: 50%;
@@ -153,11 +173,12 @@ ul li .todo_input_section {
 ul li .todo_img_section {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
+    gap: 10px;
 
     text-align: center;
 
-    gap: 10px;
+    margin-right: -15px;
 }
 
 .todo_section ul li .editTodolist img {
@@ -180,4 +201,8 @@ ul li .todo_img_section {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.task.complete {
+    text-decoration: line-through;
 }
